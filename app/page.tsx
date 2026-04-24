@@ -213,14 +213,17 @@ export default function Home() {
             <section>
               <h2 className="text-[10px] font-mono uppercase opacity-50 mb-6 tracking-[0.3em] flex items-center gap-2"><Search size={14} /> Evidence Locker</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "Evidence A: Nexus Server Room" })} className="polaroid -rotate-1 border border-white/10">
-                   <img src="/crime-scene.jpg" alt="A" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png", title: "Evidence #01: Field Agent Digital Pass" })} className="polaroid -rotate-1 border border-white/10">
+                   <img src="/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png" alt="Evidence 1" />
+                   <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#A101 - AGENT PASS</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "Agency Intelligence Report" })} className="polaroid rotate-2 border border-white/10">
-                   <img src="/police-report.jpg" alt="B" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png", title: "Evidence #02: Audio-Visual Crime Scene Record" })} className="polaroid rotate-2 border border-white/10">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png" alt="Evidence 2" />
+                   <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#B202 - AUDIO SCENE</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "Evidence C: Wallet Transaction Log" })} className="polaroid -rotate-2 border border-white/10">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png" alt="C" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "Evidence #03: Decentralized Transaction Logs" })} className="polaroid -rotate-2 border border-white/10">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png" alt="Evidence 3" />
+                   <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#C303 - WALLET LOGS</div>
                 </div>
               </div>
             </section>
@@ -235,7 +238,27 @@ export default function Home() {
                         <button onClick={handleUnlockEnv1} className="w-full py-2 border border-[#d4af37] hover:bg-[#d4af37] hover:text-black uppercase text-[10px] font-bold transition-all">Decrypt</button>
                       </>
                     ) : (
-                      <img onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png", title: "Decoded Index #01" })} src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png" className="w-full h-20 object-cover grayscale brightness-50 hover:brightness-100 transition-all cursor-pointer" />
+                      <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png", title: "Decoded Index #01" })} className="cursor-pointer group">
+                        <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png" className="w-full h-16 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-2" />
+                        <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">TIMESTAMP DATA</p>
+                      </div>
+                    )}
+                 </div>
+
+                 {/* Env #2 */}
+                 <div className="terminal-box p-6 flex flex-col items-center">
+                    {!unlockedEnvelopes[1] ? (
+                       unlockedEnvelopes[0] ? (
+                        <div className="w-full mt-auto">
+                          <input type="text" value={env2Code} onChange={(e)=>setEnv2Code(e.target.value)} placeholder="TIMESTAMP" className="w-full bg-black/50 border border-[#d4af37]/30 p-2 text-[10px] font-mono text-[#d4af37] mb-2" />
+                          <button onClick={handleUnlockEnv2} className="w-full py-2 border border-[#d4af37] hover:bg-[#d4af37] hover:text-black uppercase text-[10px] font-bold transition-all">Verify Bio</button>
+                        </div>
+                       ) : <Lock className="text-zinc-900/40 opacity-20" size={32} />
+                    ) : (
+                      <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.png", title: "Operator Intel" })} className="cursor-pointer group">
+                         <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.png" className="w-full h-16 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-2" />
+                         <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">ARCHITECT ID</p>
+                      </div>
                     )}
                  </div>
               </div>
