@@ -213,9 +213,15 @@ export default function Home() {
             <section>
               <h2 className="text-[10px] font-mono uppercase opacity-50 mb-6 tracking-[0.3em] flex items-center gap-2"><Search size={14} /> Evidence Locker</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "Crime Scene Photo" })} className="polaroid -rotate-1"><img src="/crime-scene.jpg" alt="A" /></div>
-                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "Agency Intelligence Report" })} className="polaroid rotate-2"><img src="/police-report.jpg" alt="B" /></div>
-                <div onClick={() => setSelectedEvidence({ src: "/wallet_logs.jpg", title: "Wallet Transaction Log" })} className="polaroid -rotate-2"><img src="/wallet_logs.jpg" alt="C" /></div>
+                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "Evidence A: Nexus Server Room" })} className="polaroid -rotate-1 border border-white/10">
+                   <img src="/crime-scene.jpg" alt="A" />
+                </div>
+                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "Agency Intelligence Report" })} className="polaroid rotate-2 border border-white/10">
+                   <img src="/police-report.jpg" alt="B" />
+                </div>
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "Evidence C: Wallet Transaction Log" })} className="polaroid -rotate-2 border border-white/10">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png" alt="C" />
+                </div>
               </div>
             </section>
 
@@ -229,7 +235,7 @@ export default function Home() {
                         <button onClick={handleUnlockEnv1} className="w-full py-2 border border-[#d4af37] hover:bg-[#d4af37] hover:text-black uppercase text-[10px] font-bold transition-all">Decrypt</button>
                       </>
                     ) : (
-                      <img onClick={() => setSelectedEvidence({ src: "/env1_clue.jpg", title: "Decoded Index #01" })} src="/env1_clue.jpg" className="w-full h-20 object-cover grayscale brightness-50 hover:brightness-100 transition-all cursor-pointer" />
+                      <img onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png", title: "Decoded Index #01" })} src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png" className="w-full h-20 object-cover grayscale brightness-50 hover:brightness-100 transition-all cursor-pointer" />
                     )}
                  </div>
               </div>
