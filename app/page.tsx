@@ -25,7 +25,7 @@ const CONTRACT_ABI = [
 const GENLAYER_CONTRACT_ADDRESS = "0x868ef59CBA2857bD930F3849E0d3Fdb001F914Fa";
 
 const SFX = {
-  typewriter: "https://assets.mixkit.co/active_storage/sfx/588/588-preview.mp3",
+  typewriter: "https://www.soundjay.com/communication/typewriter-key-1.mp3", // Warmer, heavy mechanical key
   noir_ambient: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Low noir ambient placeholder
   success: "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3",
   error: "https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3",
@@ -89,7 +89,8 @@ export default function Home() {
       let i = 0;
       const interval = setInterval(() => {
         setIntroText(fullIntro.slice(0, i));
-        if (i % 5 === 0) playSFX('typewriter');
+        // Play sound more frequently with smaller steps for a 'streaming' audio feel
+        if (i % 3 === 0) playSFX('typewriter');
         i++;
         if (i > fullIntro.length) {
           clearInterval(interval);
