@@ -286,8 +286,7 @@ export default function Home() {
                  <Lock size={14} /> Encrypted Patterns
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                 {/* Env #1 */}
-                 <div className="terminal-box p-6 flex flex-col items-center min-h-[160px]">
+                 {/* Env #1 */                 <div className="terminal-box p-6 flex flex-col items-center min-h-[160px]">
                     {!unlockedEnvelopes[0] ? (
                       <>
                         <input type="text" value={inputValue} onChange={(e)=>setInputValue(e.target.value)} placeholder="DECRYPT KEY" className="w-full bg-black/50 border border-[#d4af37]/30 p-3 text-[10px] font-mono text-[#d4af37] mb-3 focus:outline-none focus:border-[#d4af37]" />
@@ -299,41 +298,36 @@ export default function Home() {
                         )}
                       </>
                     ) : (
-                      <div onClick={() => setSelectedEvidence({ src: "/env1_clue.jpg", title: "Decoded Index #01" })} className="cursor-pointer group w-full">
-                        <img src="/env1_clue.jpg" className="w-full h-20 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-4" />
-                        <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">DATA BLOB #01 // RECOVERED</p>
+                      <div onClick={() => { playSFX('typewriter'); setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.jpg", title: "Decoded Index #01" }); }} className="cursor-pointer group w-full">
+                        <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.jpg" className="w-full h-20 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-4" />
+                        <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">ENV #01 // RECOVERED</p>
                       </div>
                     )}
-                 </div>
+                  </div>
                  
                  {/* Env #2 */}
                  <div className="terminal-box p-6 flex flex-col items-center">
-                    {!unlockedEnvelopes[1] ? (
-                       unlockedEnvelopes[0] ? (
-                        <div className="w-full mt-auto">
-                          <input type="text" value={env2Code} onChange={(e)=>setEnv2Code(e.target.value)} placeholder="TIMESTAMP" className="w-full bg-black/50 border border-[#d4af37]/30 p-2 text-[10px] font-mono text-[#d4af37]/60 placeholder:text-[#d4af37]/40 mb-2 focus:text-[#d4af37] transition-all" />
-                          <button onClick={handleUnlockEnv2} className="w-full py-2 border border-[#d4af37] hover:bg-[#d4af37] hover:text-black uppercase text-[10px] font-bold transition-all">Verify Bio</button>
-                        </div>
-                       ) : <Lock className="text-zinc-900/40 opacity-20" size={32} />
-                    ) : (
-                      <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.png", title: "Operator Intel" })} className="cursor-pointer group">
-                         <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.png" className="w-full h-16 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-2" />
-                         <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">ARCHITECT ID</p>
+                    {unlockedEnvelopes[0] ? (
+                      <div onClick={() => { playSFX('typewriter'); setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.jpg", title: "Operator Intel" }); }} className="cursor-pointer group">
+                         <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.jpg" className="w-full h-16 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-2" />
+                         <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">ENV #02 // RECOVERED</p>
                       </div>
+                    ) : (
+                       <Lock className="text-zinc-900/40 opacity-20" size={32} />
                     )}
                  </div>
 
                  {/* Env #3 Final */}
                  <div className="terminal-box p-6 flex flex-col items-center justify-center border-dashed opacity-80">
-                    {unlockedEnvelopes[1] ? (
-                       <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env3_final.png", title: "Final Target identified" })} className="cursor-pointer group">
-                         <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env3_final.png" className="w-full h-16 object-cover grayscale group-hover:grayscale-0 transition-all mb-2 border border-[#d4af37]/40" />
+                    {unlockedEnvelopes[0] ? (
+                       <div onClick={() => { playSFX('typewriter'); setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env3_clue_final.jpg", title: "Final Target identified" }); }} className="cursor-pointer group">
+                         <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env3_clue_final.jpg" className="w-full h-16 object-cover grayscale group-hover:grayscale-0 transition-all mb-2 border border-[#d4af37]/40" />
                          <p className="text-[10px] text-[#d4af37] font-mono text-center tracking-tighter">FINAL VERDICT</p>
                        </div>
                     ) : (
                       <Trophy className="opacity-10 text-[#d4af37]" size={32} />
                     )}
-                 </div>
+                 </div>v>
               </div>
             </section>
         </div>
