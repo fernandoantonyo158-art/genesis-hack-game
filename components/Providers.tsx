@@ -13,22 +13,22 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 import { defineChain } from "viem";
 
-const genLayerTestnet = defineChain({
+const genLayerBradbury = defineChain({
   id: 4221,
-  name: "GenLayer Testnet",
+  name: "GenLayer Bradbury",
   nativeCurrency: { name: "GEN", symbol: "GEN", decimals: 18 },
   rpcUrls: {
-    default: { http: ["https://rpc.testnet-chain.genlayer"] },
+    default: { http: ["https://rpc-bradbury.genlayer.com"] },
   },
   blockExplorers: {
-    default: { name: "GenSearch", url: "https://explorer.genlayer.com" },
+    default: { name: "GenSearch", url: "https://explorer-bradbury.genlayer.com" },
   },
 });
 
 const config = getDefaultConfig({
   appName: "GenLayer Case File",
   projectId: "ad8fd3b8f847b34c0681d9a1df2650b6",
-  chains: [genLayerTestnet, mainnet, sepolia],
+  chains: [genLayerBradbury, mainnet, sepolia],
   ssr: true,
 });
 
