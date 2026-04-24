@@ -265,12 +265,12 @@ export default function Home() {
                  <Search size={14} /> Evidence Locker: File #01
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "SCENE // 23:44" })} className="polaroid -rotate-1">
-                   <img src="/crime-scene.jpg" alt="" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png", title: "SCENE // 23:44" })} className="polaroid -rotate-1">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png" alt="" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">SCENE // 23:44</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "INTEL // LOGS" })} className="polaroid rotate-2">
-                   <img src="/police-report.jpg" alt="" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png", title: "INTEL // LOGS" })} className="polaroid rotate-2">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png" alt="" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">INTEL // LOGS</div>
                 </div>
                 <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "WALLET // 0xAF" })} className="polaroid -rotate-2">
