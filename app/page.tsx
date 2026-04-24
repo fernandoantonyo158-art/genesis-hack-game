@@ -25,7 +25,7 @@ const CONTRACT_ABI = [
 const GENLAYER_CONTRACT_ADDRESS = "0x868ef59CBA2857bD930F3849E0d3Fdb001F914Fa";
 
 const SFX = {
-  typewriter: "https://www.soundjay.com/communication/typewriter-key-1.mp3", // Warmer, heavy mechanical key
+  typewriter: "https://www.soundjay.com/communication/typewriter-mechanical-1.mp3", // Professional Daktilo SFX
   noir_ambient: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Low noir ambient placeholder
   success: "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3",
   error: "https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3",
@@ -136,7 +136,14 @@ export default function Home() {
   // --------------------------------------------------------------------------------
   if (screen === 'intro') {
     return (
-      <main className="min-h-screen bg-black flex items-center justify-center p-6 film-grain">
+      <main 
+        className="min-h-screen flex items-center justify-center p-6 relative film-grain scanline-effect"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/images/background.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         {!isConnected ? (
           <div className="text-center space-y-6">
             <ShieldAlert className="w-20 h-20 text-[#d4af37] mx-auto animate-pulse" />
@@ -148,7 +155,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="max-w-3xl w-full">
-             <div className="noir-panel p-8 md:p-12 font-mono text-sm leading-loose whitespace-pre-wrap text-zinc-400 border-l-4 border-[#d4af37] terminal-monitor">
+             <div className="noir-panel p-8 md:p-12 font-mono text-sm leading-loose whitespace-pre-wrap text-[#d4af37] border-l-4 border-[#d4af37] terminal-monitor">
                 {introText}
                 {!introFinished && <span className="cursor-blink"></span>}
                 
@@ -172,7 +179,7 @@ export default function Home() {
   // --------------------------------------------------------------------------------
   if (screen === 'selection') {
     return (
-      <main className="min-h-screen p-8 md:p-16 film-grain">
+      <main className="min-h-screen p-8 md:p-16 film-grain scanline-effect">
         <header className="flex justify-between items-center mb-16 pb-8 border-b border-white/10">
            <div>
              <h1 className="text-4xl font-bold uppercase tracking-widest text-[#d4af37] mb-2">Agency Dashboard</h1>
@@ -219,7 +226,7 @@ export default function Home() {
   // SCREEN: Investigation
   // --------------------------------------------------------------------------------
   return (
-    <div className="min-h-screen film-grain p-4 md:p-8">
+    <div className="min-h-screen film-grain p-4 md:p-8 scanline-effect">
       {/* Noir Header */}
       <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12 pb-8 border-b border-white/10">
         <div>
