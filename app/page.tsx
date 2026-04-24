@@ -26,6 +26,14 @@ const CONTRACT_ABI = [
 
 const GENLAYER_CONTRACT_ADDRESS = "0x868ef59CBA2857bD930F3849E0d3Fdb001F914Fa";
 
+// Sound Effects URLs
+const SFX = {
+  click: "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3",
+  success: "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3",
+  error: "https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3",
+  ambient: "https://assets.mixkit.co/active_storage/sfx/2564/2564-preview.mp3"
+};
+
 export default function Home() {
   const { isConnected, address } = useAccount();
 
@@ -57,28 +65,57 @@ export default function Home() {
   // Lightbox State
   const [selectedEvidence, setSelectedEvidence] = useState<{ src: string; title: string } | null>(null);
 
+  // Sound triggering function
+  const playSFX = (type: keyof typeof SFX) => {
+    const audio = new Audio(SFX[type]);
+    audio.volume = 0.3;
+    audio.play().catch(() => {}); // Catch browser autoplay blocks
+  };
+
+  // Typewriter effect for briefing
+  const [briefingText, setBriefingText] = useState("");
+  const fullBriefing = "In the year 2026, the first decentralized AI was compromised. A rogue developer known only as 'The Architect' exploited a vulnerability in the GenVM. You have been assigned to extract the culprit's identity from the blockchain logs. Follow the digital breadcrumbs, decrypt the oracle messages, and bring justice to the GenLayer network.";
+
+  useEffect(() => {
+    if (!isConnected) return;
+    let i = 0;
+    const timer = setInterval(() => {
+      setBriefingText(fullBriefing.slice(0, i));
+      i++;
+      if (i > fullBriefing.length) clearInterval(timer);
+    }, 30);
+    return () => clearInterval(timer);
+  }, [isConnected]);
+
   // Envelope unlock codes
   const [env1Code, setEnv1Code] = useState("");
   const [env2Code, setEnv2Code] = useState("");
 
   const handleUnlockEnv1 = () => {
+    playSFX('click');
     if (env1Code.toUpperCase().trim() === "LEGEND") {
       setUnlockedEnvelopes([true, unlockedEnvelopes[1], unlockedEnvelopes[2]]);
+      playSFX('success');
     } else {
+      playSFX('error');
       alert("Invalid decryption key. Access Denied.");
     }
   };
 
   const handleUnlockEnv2 = () => {
+    playSFX('click');
     if (env2Code.trim() === "031407") {
       setUnlockedEnvelopes([unlockedEnvelopes[0], true, true]); // Unlocks Env 2 and Env 3 automatically
+      playSFX('success');
     } else {
+      playSFX('error');
       alert("Invalid Phase 2 Code. Access Denied.");
     }
   };
 
   const handleVerifySolution = () => {
     if (!solutionHash || !address) return;
+    playSFX('click');
     
     if (GENLAYER_CONTRACT_ADDRESS === "0xYOUR_DEPLOYED_CONTRACT_ADDRESS") {
        alert("GenLayer Intelligent Contract not yet deployed. Please deploy and update the contract address in page.tsx");
@@ -93,9 +130,12 @@ export default function Home() {
     });
   };
 
+  useEffect(() => {
+    if (isConfirmed) playSFX('success');
+  }, [isConfirmed]);
+
   const handleUnlockHint = () => {
-    // Simulate transaction to burn/pay tokens for hint
-    // wagmi writeContract would be used here
+    playSFX('click');
     alert("Transaction prompted to pay 0.1 GEN for a hint...");
   };
 
@@ -125,15 +165,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-300 font-sans selection:bg-neonBlue selection:text-black">
       {/* Header */}
-      <div className="bg-black text-white p-6 md:p-8 border-b-2 border-neonBlue flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sticky top-0 z-50">
+      <div className="bg-black text-white p-6 md:p-8 border-b-2 border-[#110fff] flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sticky top-0 z-50 crt">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-widest font-mono glow-blue">Case File: #01</h1>
-          <p className="text-neonBlue mt-2 font-mono text-sm uppercase">Subject: The Genesis Hack</p>
+          <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-widest font-mono glitch" data-text="Case File: #01">Case File: #01</h1>
+          <p className="text-[#bca2ff] mt-2 font-mono text-sm uppercase tracking-[0.2em]">Subject: The Genesis Hack</p>
         </div>
         <div className="flex items-center gap-6">
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-neonBlue/10 border border-neonBlue/30 rounded-full">
-            <div className="w-2 h-2 bg-neonBlue rounded-full animate-pulse shadow-[0_0_8px_#0ea5e9]"></div>
-            <span className="text-[10px] font-mono text-neonBlue uppercase tracking-widest">GenLayer Bradbury</span>
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-[#110fff]/10 border border-[#110fff]/30 rounded-full">
+            <div className="w-2 h-2 bg-[#110fff] rounded-full animate-pulse shadow-[0_0_8px_#110fff]"></div>
+            <span className="text-[10px] font-mono text-[#bca2ff] uppercase tracking-widest">GenLayer Bradbury</span>
           </div>
           <div className="hidden md:block">
              <ConnectButton showBalance={false} />
@@ -141,7 +181,19 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
+        
+        {/* Investigator Briefing */}
+        <section className="cyber-panel p-6 rounded-xl border-l-4 border-[#bca2ff] bg-black/40">
+           <h3 className="text-[#bca2ff] font-mono text-xs uppercase mb-3 flex items-center gap-2">
+             <div className="w-1.5 h-1.5 bg-[#bca2ff] rotate-45"></div> Mission Briefing
+           </h3>
+           <p className="font-mono text-sm text-zinc-400 leading-relaxed min-h-[80px]">
+             {briefingText}<span className="animate-pulse">_</span>
+           </p>
+        </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Left Column: Evidence & Envelopes */}
         <div className="lg:col-span-2 space-y-8">
@@ -303,7 +355,7 @@ export default function Home() {
              <p className="text-xs text-zinc-500 mb-4">Stuck? Pay gas fees to query the GenLayer Oracle network for a hint.</p>
              <button 
                 onClick={handleUnlockHint}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 hover:border-zinc-500 py-3 rounded text-sm text-white font-mono flex justify-center items-center gap-2 transition-all"
+                className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 hover:border-zinc-500 py-3 rounded text-sm text-white font-mono flex justify-center items-center gap-2 transition-all hover:text-[#bca2ff] hover:border-[#bca2ff]/50"
              >
                 <Lock className="w-4 h-4 text-zinc-400" /> Unlock Hint (0.1 GEN)
              </button>
