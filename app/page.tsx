@@ -25,8 +25,8 @@ const CONTRACT_ABI = [
 const GENLAYER_CONTRACT_ADDRESS = "0x868ef59CBA2857bD930F3849E0d3Fdb001F914Fa";
 
 const SFX = {
-  typewriter: "https://www.soundjay.com/communication/typewriter-mechanical-1.mp3", // Professional Daktilo SFX
-  noir_ambient: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Low noir ambient placeholder
+  typewriter: "https://www.soundjay.com/communication/typewriter-mechanical-1.mp3",
+  noir_ambient: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   success: "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3",
   error: "https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3",
   click: "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"
@@ -89,7 +89,6 @@ export default function Home() {
       let i = 0;
       const interval = setInterval(() => {
         setIntroText(fullIntro.slice(0, i));
-        // Play sound more frequently with smaller steps for a 'streaming' audio feel
         if (i % 3 === 0) playSFX('typewriter');
         i++;
         if (i > fullIntro.length) {
@@ -101,34 +100,26 @@ export default function Home() {
     }
   }, [screen, isConnected, address]);
 
-  // Handlers
   const handleUnlockEnv1 = () => {
+    playSFX('click');
     if (env1Code.toUpperCase().trim() === "LEGEND") {
       setUnlockedEnvelopes([true, unlockedEnvelopes[1], unlockedEnvelopes[2]]);
       playSFX('success');
-    } else {
-      playSFX('error');
-    }
+    } else playSFX('error');
   };
 
   const handleUnlockEnv2 = () => {
+    playSFX('click');
     if (env2Code.trim() === "031407") {
       setUnlockedEnvelopes([unlockedEnvelopes[0], true, true]);
       playSFX('success');
-    } else {
-      playSFX('error');
-    }
+    } else playSFX('error');
   };
 
   const handleVerifySolution = () => {
     if (!solutionHash || !address) return;
     playSFX('click');
-    writeContract({
-      address: GENLAYER_CONTRACT_ADDRESS as `0x${string}`,
-      abi: CONTRACT_ABI,
-      functionName: 'solve_case',
-      args: [solutionHash],
-    });
+    writeContract({ address: GENLAYER_CONTRACT_ADDRESS as `0x${string}`, abi: CONTRACT_ABI, functionName: 'solve_case', args: [solutionHash] });
   };
 
   // --------------------------------------------------------------------------------
@@ -136,33 +127,22 @@ export default function Home() {
   // --------------------------------------------------------------------------------
   if (screen === 'intro') {
     return (
-      <main 
-        className="min-h-screen flex items-center justify-center p-6 relative film-grain scanline-effect"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/background.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <div className="agency-wrapper monitor-lines justify-center items-center p-6">
         {!isConnected ? (
-          <div className="text-center space-y-6">
-            <ShieldAlert className="w-20 h-20 text-[#d4af37] mx-auto animate-pulse" />
-            <h1 className="text-2xl font-mono text-[#d4af37]/80 tracking-[0.5em] uppercase">GenLayer Noir</h1>
-            <div className="p-8 border border-white/10 bg-zinc-900/50 rounded-xl space-y-6">
-               <p className="text-sm font-mono text-zinc-400">Restricted Access. Authenticate for agency deployment.</p>
-               <ConnectButton />
-            </div>
+          <div className="terminal-box text-center space-y-8 max-w-lg w-full">
+            <ShieldAlert className="w-20 h-20 text-[#d4af37] mx-auto animate-flicker" />
+            <h1 className="text-2xl font-mono tracking-widest uppercase">GenLayer Agency</h1>
+            <p className="text-sm font-mono text-zinc-500">Restricted access protocol. Authenticate via secure link.</p>
+            <div className="flex justify-center"><ConnectButton /></div>
           </div>
         ) : (
           <div className="max-w-3xl w-full">
-             <div className="noir-panel p-8 md:p-12 font-mono text-sm leading-loose whitespace-pre-wrap text-[#d4af37] border-l-4 border-[#d4af37] terminal-monitor">
-                {introText}
-                {!introFinished && <span className="cursor-blink"></span>}
-                
+             <div className="terminal-box font-mono text-sm leading-loose whitespace-pre-wrap min-h-[400px]">
+                {introText}<span className="cursor"></span>
                 {introFinished && (
                   <button 
                     onClick={() => { playSFX('click'); setScreen('selection'); }}
-                    className="mt-12 block w-full py-5 border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all uppercase tracking-[0.4em] font-bold animate-in fade-in slide-in-from-bottom-4 duration-1000 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+                    className="mt-12 block w-full py-5 border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all uppercase tracking-[0.4em] font-bold"
                   >
                     View Active Case Files
                   </button>
@@ -170,7 +150,7 @@ export default function Home() {
              </div>
           </div>
         )}
-      </main>
+      </div>
     );
   }
 
@@ -179,46 +159,32 @@ export default function Home() {
   // --------------------------------------------------------------------------------
   if (screen === 'selection') {
     return (
-      <main className="min-h-screen p-8 md:p-16 film-grain scanline-effect">
-        <header className="flex justify-between items-center mb-16 pb-8 border-b border-white/10">
+      <div className="agency-wrapper monitor-lines p-8 md:p-16 overflow-y-auto">
+        <header className="flex justify-between items-center mb-16 pb-8 border-b border-[#d4af37]/20">
            <div>
-             <h1 className="text-4xl font-bold uppercase tracking-widest text-[#d4af37] mb-2">Agency Dashboard</h1>
-             <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest">Signed in as: {address?.slice(0,6)}...{address?.slice(-4)}</p>
+             <h1 className="text-3xl font-bold uppercase tracking-widest">Agency Database</h1>
+             <p className="text-xs font-mono opacity-50 uppercase tracking-widest">Signed in: {address?.slice(0,6)}...{address?.slice(-4)}</p>
            </div>
-           <button onClick={() => setSoundEnabled(!soundEnabled)} className="p-3 border border-white/10 text-zinc-500 hover:text-white transition-colors">
-              {soundEnabled ? <Volume2 size={24} /> : <VolumeX size={24} />}
+           <button onClick={() => setSoundEnabled(!soundEnabled)} className="p-3 border border-[#d4af37]/20 hover:border-[#d4af37] transition-all">
+              {soundEnabled ? <Volume2 /> : <VolumeX />}
            </button>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-           {/* Case #01 */}
-           <div 
-             onClick={() => { playSFX('click'); setScreen('investigation'); }}
-             className="group cursor-pointer space-y-4"
-           >
-              <div className="aspect-[4/3] bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center transition-all group-hover:border-[#d4af37] relative overflow-hidden">
-                 <img src="/folder-icon.png" alt="Folder" className="w-24 h-24 opacity-40 group-hover:opacity-100 transition-all" />
-                 <div className="absolute top-4 left-4 px-2 py-1 bg-[#d4af37] text-black text-[10px] font-bold uppercase tracking-tighter">Active Case</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+           <div onClick={() => { playSFX('click'); setScreen('investigation'); }} className="group cursor-pointer">
+              <div className="aspect-square terminal-box flex items-center justify-center group-hover:border-[#d4af37] transition-all relative">
+                 <img src="/folder-icon.png" alt="Folder" className="w-32 h-32 grayscale brightness-50 group-hover:brightness-100 transition-all" />
+                 <div className="absolute top-4 left-4 px-2 py-1 bg-[#d4af37] text-black text-[10px] font-bold uppercase">Active Case</div>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-white group-hover:text-[#d4af37] transition-all">#01: The Architect</h3>
-                <p className="text-xs text-zinc-500 font-mono">Nexus Data Center Breach // GenLayer Testnet</p>
-              </div>
+              <h3 className="mt-4 text-lg font-bold group-hover:text-white">#01: The Architect</h3>
            </div>
 
-           {/* Case #02 Locked */}
-           <div className="opacity-40 cursor-not-allowed space-y-4">
-              <div className="aspect-[4/3] bg-zinc-900 border border-white/5 rounded-lg flex items-center justify-center relative">
-                 <Lock className="w-16 h-16 text-zinc-800" />
-                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Locked Asset</div>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-zinc-600">Coming Soon</h3>
-                <p className="text-xs text-zinc-800 font-mono">Restricted Agency Access</p>
-              </div>
+           <div className="opacity-40 cursor-not-allowed">
+              <div className="aspect-square terminal-box flex items-center justify-center"><Lock size={48} className="opacity-20" /></div>
+              <h3 className="mt-4 text-lg font-bold">Coming Soon</h3>
            </div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -226,140 +192,73 @@ export default function Home() {
   // SCREEN: Investigation
   // --------------------------------------------------------------------------------
   return (
-    <div className="min-h-screen film-grain p-4 md:p-8 scanline-effect">
-      {/* Noir Header */}
-      <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12 pb-8 border-b border-white/10">
+    <div className="agency-wrapper monitor-lines p-4 md:p-8 overflow-y-auto">
+      <header className="max-w-7xl mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12 pb-8 border-b border-[#d4af37]/20">
         <div>
-          <button onClick={() => setScreen('selection')} className="text-[10px] uppercase font-mono text-[#d4af37] hover:underline mb-2 block">← Return to Database</button>
-          <h1 className="text-3xl font-bold uppercase text-white tracking-widest">The Architect</h1>
-          <p className="text-[10px] font-mono text-zinc-500 uppercase flex items-center gap-2 mt-1">
-             <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full animate-pulse"></div> Bradbury Testnet 2026.04.24
-          </p>
+          <button onClick={() => setScreen('selection')} className="text-[10px] uppercase font-mono hover:underline mb-2 block tracking-widest">← Return to Database</button>
+          <h1 className="text-3xl font-bold uppercase tracking-widest">Case #01: The Architect</h1>
         </div>
-        <div className="flex items-center gap-4">
-           <button onClick={() => setSoundEnabled(!soundEnabled)} className="p-2 text-zinc-500 hover:text-white">
-              {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
-           </button>
+        <div className="flex items-center gap-6">
+           <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-full">
+              <div className="w-2 h-2 bg-[#d4af37] rounded-full animate-pulse shadow-[0_0_8px_#d4af37]"></div>
+              <span className="text-[10px] font-mono uppercase tracking-widest">GenLayer Bradbury</span>
+           </div>
+           <button onClick={() => setSoundEnabled(!soundEnabled)} className="text-zinc-500 hover:text-white transition-all">{soundEnabled ? <Volume2 /> : <VolumeX />}</button>
            <ConnectButton showBalance={false} />
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Evidence Section */}
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2 space-y-12">
             <section>
-              <h2 className="text-xs font-mono uppercase text-zinc-500 mb-6 flex items-center gap-2 tracking-[0.2em]">
-                 <Search size={14} /> Evidence Locker
-              </h2>
+              <h2 className="text-[10px] font-mono uppercase opacity-50 mb-6 tracking-[0.3em] flex items-center gap-2"><Search size={14} /> Evidence Locker</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "Evidence A: Nexus Server Room" })} className="polaroid-frame -rotate-2 border-[#d4af37]/20">
-                   <img src="/crime-scene.jpg" alt="Crime Scene" />
-                   <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#A109 - CRIME SCENE</div>
-                </div>
-                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "Evidence B: Agency Intelligence Report" })} className="polaroid-frame rotate-1 border-[#d4af37]/20">
-                   <img src="/police-report.jpg" alt="Police Report" />
-                   <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#B212 - AGENCY DOCS</div>
-                </div>
-                <div onClick={() => setSelectedEvidence({ src: "/wallet_logs.jpg", title: "Evidence C: Wallet Transaction Log" })} className="polaroid-frame -rotate-1">
-                   <img src="/wallet_logs.jpg" alt="Wallet Logs" />
-                   <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#C441 - WALLET LOGS</div>
-                </div>
+                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "Crime Scene Photo" })} className="polaroid -rotate-1"><img src="/crime-scene.jpg" alt="A" /></div>
+                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "Agency Intelligence Report" })} className="polaroid rotate-2"><img src="/police-report.jpg" alt="B" /></div>
+                <div onClick={() => setSelectedEvidence({ src: "/wallet_logs.jpg", title: "Wallet Transaction Log" })} className="polaroid -rotate-2"><img src="/wallet_logs.jpg" alt="C" /></div>
               </div>
             </section>
 
-            {/* Locked Envelopes Section */}
             <section className="space-y-6">
-              <h2 className="text-xs font-mono uppercase text-zinc-500 flex items-center gap-2 tracking-[0.2em]">
-                 <Lock size={14} /> Encrypted Patterns
-              </h2>
+              <h2 className="text-[10px] font-mono uppercase opacity-50 tracking-[0.3em] flex items-center gap-2"><Lock size={14} /> Encrypted Patterns</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                 {/* Env #1 */}
-                 <div className="noir-panel p-6 flex flex-col items-center">
+                 <div className="terminal-box p-6 flex flex-col items-center">
                     {!unlockedEnvelopes[0] ? (
                       <>
-                        <Lock className="text-zinc-800 mb-4" />
-                        <input type="text" value={env1Code} onChange={(e)=>setEnv1Code(e.target.value)} placeholder="DECRYPT KEY" className="w-full bg-zinc-900 border-none p-2 text-[10px] font-mono text-zinc-400 mb-2 focus:ring-1 focus:ring-[#d4af37]" />
-                        <button onClick={handleUnlockEnv1} className="w-full py-2 bg-transparent border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black text-[10px] uppercase font-bold transition-all">Settle Hash</button>
+                        <input type="text" value={env1Code} onChange={(e)=>setEnv1Code(e.target.value)} placeholder="DECRYPT KEY" className="w-full bg-black/50 border border-[#d4af37]/30 p-3 text-[10px] font-mono text-[#d4af37] mb-3" />
+                        <button onClick={handleUnlockEnv1} className="w-full py-2 border border-[#d4af37] hover:bg-[#d4af37] hover:text-black uppercase text-[10px] font-bold transition-all">Decrypt</button>
                       </>
                     ) : (
-                      <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png", title: "Decoded Pattern #01" })} className="cursor-pointer group">
-                        <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env1_clue.png" className="w-full h-16 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-2" />
-                        <p className="text-[10px] text-[#d4af37] font-mono text-center">TIMESTAMP: 03:14:07</p>
-                      </div>
-                    )}
-                 </div>
-                 
-                 {/* Env #2 */}
-                 <div className="noir-panel p-6 flex flex-col items-center">
-                    {!unlockedEnvelopes[1] ? (
-                      <Lock className="text-zinc-900/40 mb-2" />
-                    ) : (
-                      <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.png", title: "Subject Identified" })} className="cursor-pointer group">
-                         <img src="/GenLayer_Game_Assets/Folder 03 Locked_Envelopes/env2_clue.png" className="w-full h-16 object-cover grayscale brightness-50 group-hover:brightness-100 transition-all mb-2" />
-                         <p className="text-[10px] text-[#d4af37] font-mono text-center">IDENTITY: ARCHITECT</p>
-                      </div>
-                    )}
-                    {unlockedEnvelopes[0] && !unlockedEnvelopes[1] && (
-                       <div className="w-full mt-auto">
-                        <input type="text" value={env2Code} onChange={(e)=>setEnv2Code(e.target.value)} placeholder="TIMESTAMP" className="w-full bg-zinc-900 border-none p-2 text-[10px] font-mono text-zinc-400 mb-2 focus:ring-1 focus:ring-[#d4af37]" />
-                        <button onClick={handleUnlockEnv2} className="w-full py-2 bg-transparent border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black text-[10px] uppercase font-bold transition-all">Verify Bio</button>
-                       </div>
+                      <img onClick={() => setSelectedEvidence({ src: "/env1_clue.jpg", title: "Decoded Index #01" })} src="/env1_clue.jpg" className="w-full h-20 object-cover grayscale brightness-50 hover:brightness-100 transition-all cursor-pointer" />
                     )}
                  </div>
               </div>
             </section>
         </div>
 
-        {/* Portal Column */}
-        <div className="space-y-12">
-            <section className="noir-panel p-8 space-y-6 terminal-monitor">
-                <h3 className="text-sm font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-                   <ShieldAlert size={18} className="text-[#d4af37]" /> Intelligence Portal
-                </h3>
-                
+        <aside className="space-y-8">
+            <section className="terminal-box p-8 space-y-6">
+                <h3 className="text-sm font-bold uppercase tracking-[0.3em] flex items-center gap-2 text-white">Verification Portal</h3>
                 {caseSolved ? (
-                  <div className="text-center py-6 space-y-3">
-                     <Trophy className="w-12 h-12 text-[#d4af37] mx-auto " />
-                     <p className="text-[#d4af37] font-bold text-xs uppercase tracking-[0.2em]">Master Detective Verified</p>
-                     <p className="text-[10px] text-zinc-500 font-mono">Solution established on GenLayer. SBT secured.</p>
-                  </div>
+                  <div className="text-center py-6 space-y-4"><Trophy className="w-12 h-12 mx-auto text-[#d4af37]" /><p className="text-xs font-bold uppercase">Master Detective Verified</p></div>
                 ) : (
                   <>
-                    <p className="text-[10px] font-mono text-zinc-500 line-clamp-2">Enter the true identity of the rogue operative to finalize the intelligent contract solve.</p>
-                    <input 
-                      type="text" 
-                      value={solutionHash}
-                      onChange={(e) => setSolutionHash(e.target.value)}
-                      className="w-full bg-zinc-900 border-none p-4 rounded text-xs font-mono text-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30" 
-                      placeholder="IDENT_UNKNOWN"
-                    />
-                    <button 
-                      onClick={handleVerifySolution}
-                      disabled={!solutionHash || isMinting || isConfirming}
-                      className="w-full py-5 bg-[#d4af37]/10 hover:bg-[#d4af37] border border-[#d4af37]/50 text-[#d4af37] hover:text-black font-bold uppercase tracking-[0.3em] transition-all disabled:grayscale disabled:opacity-50"
-                    >
-                       {isMinting ? 'Dispatching...' : isConfirming ? 'Analyzing...' : 'SUBMIT VERDICT'}
-                    </button>
+                    <input type="text" value={solutionHash} onChange={(e)=>setSolutionHash(e.target.value)} className="w-full bg-black/50 border border-[#d4af37]/30 p-4 text-xs font-mono text-[#d4af37]" placeholder="IDENT_UNKNOWN" />
+                    <button onClick={handleVerifySolution} disabled={isMinting || isConfirming} className="w-full py-5 bg-[#d4af37] text-black font-bold uppercase tracking-[0.3em] hover:bg-white transition-all disabled:opacity-50">SUBMIT VERDICT</button>
                   </>
                 )}
             </section>
-
-            <section className="p-8 border border-white/5 space-y-4 text-center">
-               <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Out of leads?</p>
-               <button onClick={() => alert("Paying 0.1 GEN for hint...")} className="text-xs uppercase font-bold text-zinc-400 hover:text-[#d4af37] transition-all underline decoration-1 underline-offset-4">Query Agency Oracle (0.1 GEN)</button>
-            </section>
-        </div>
+        </aside>
       </div>
 
-      {/* AOIR MODAL LIGHTBOX */}
       {selectedEvidence && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/95 backdrop-blur-xl animate-in fade-in duration-500" onClick={() => setSelectedEvidence(null)}>
-           <div className="relative max-w-4xl w-full flex flex-col items-center" onClick={(e)=>e.stopPropagation()}>
-              <button onClick={() => setSelectedEvidence(null)} className="absolute -top-12 right-0 text-[#d4af37] font-mono text-xs uppercase hover:underline underline-offset-4">/CLOSE_INTEL/</button>
-              <div className="bg-[#ccc] p-4 pb-20 shadow-[0_0_100px_rgba(212,175,55,0.1)] rounded-sm border border-white/10 group cursor-zoom-out" onClick={() => setSelectedEvidence(null)}>
+           <div className="relative max-w-4xl w-full" onClick={(e)=>e.stopPropagation()}>
+              <div className="bg-zinc-200 p-4 pb-20 shadow-2xl relative">
                 <img src={selectedEvidence.src} alt="Evidence" className="max-h-[70vh] w-auto grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-1000" />
-                <div className="mt-8 text-black opacity-40 font-mono text-[10px] uppercase text-center">{selectedEvidence.title}</div>
+                <p className="absolute bottom-6 left-0 right-0 text-center font-mono text-[10px] text-zinc-900 opacity-50 uppercase">{selectedEvidence.title}</p>
               </div>
+              <button onClick={() => setSelectedEvidence(null)} className="mt-8 block w-full text-center text-[#d4af37] font-mono text-xs uppercase hover:underline">/ Close Intel /</button>
            </div>
         </div>
       )}
