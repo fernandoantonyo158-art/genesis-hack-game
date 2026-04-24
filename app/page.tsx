@@ -34,6 +34,7 @@ const SFX = {
 
 export default function Home() {
   const { isConnected, address } = useAccount();
+  const [systemInitialized, setSystemInitialized] = useState(false);
   const [screen, setScreen] = useState<'intro' | 'selection' | 'investigation'>('intro');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const ambientRef = useRef<HTMLAudioElement | null>(null);
@@ -85,7 +86,7 @@ export default function Home() {
   const fullIntro = `GENLAYER INTELLIGENCE AGENCY // CENTRAL DATABASE\n\nSYSTEM STATUS: CRITICAL\nAccess granted to Detective: ${address || "UNIDENTIFIED"}\n\nThe digital world is bleeding. Decentralized crimes require a new breed of investigator. You are now connected to the only system capable of processing AI-driven evidence and subjective consensus.\n\nYour directive: Navigate through the data, decode encrypted patterns, and use the power of the GenLayer Intelligent Contracts to bring justice. Select an active case file to commence deployment.`;
 
   useEffect(() => {
-    if (screen === 'intro' && isConnected) {
+    if (screen === 'intro' && isConnected && systemInitialized) {
       let i = 0;
       const interval = setInterval(() => {
         setIntroText(fullIntro.slice(0, i));
@@ -99,7 +100,7 @@ export default function Home() {
       }, 45); // Optimally timed for the mechanical feel
       return () => clearInterval(interval);
     }
-  }, [screen, isConnected, address]);
+  }, [screen, isConnected, address, systemInitialized]);
 
   const handleUnlockEnv1 = () => {
     playSFX('click');
@@ -130,11 +131,30 @@ export default function Home() {
     return (
       <div className="agency-wrapper monitor-lines justify-center items-center p-6">
         {!isConnected ? (
-          <div className="terminal-box text-center space-y-8 max-w-lg w-full">
+          <div className="terminal-box text-center space-y-8 max-w-lg w-full scale-100 animate-in fade-in zoom-in-95 duration-700">
             <ShieldAlert className="w-20 h-20 text-[#d4af37] mx-auto animate-flicker" />
             <h1 className="text-2xl font-mono tracking-widest uppercase">GenLayer Agency</h1>
             <p className="text-sm font-mono text-zinc-500">Restricted access protocol. Authenticate via secure link.</p>
             <div className="flex justify-center"><ConnectButton /></div>
+          </div>
+        ) : !systemInitialized ? (
+          <div className="terminal-box text-center space-y-8 max-w-lg w-full scale-100 animate-in fade-in zoom-in-95 duration-1000">
+             <div className="w-16 h-16 border-2 border-[#d4af37] rounded-full mx-auto flex items-center justify-center animate-pulse">
+                <Cpu className="text-[#d4af37]" />
+             </div>
+             <div>
+                <h2 className="text-xl font-bold uppercase tracking-widest text-white mb-2">System Ready</h2>
+                <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.2em]">Bio-signature established. Awaiting deployment.</p>
+             </div>
+             <button 
+                onClick={() => {
+                  setSystemInitialized(true);
+                  playSFX('click');
+                }}
+                className="w-full py-6 border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all font-bold uppercase tracking-[0.5em] shadow-[0_0_20px_rgba(212,175,55,0.1)]"
+             >
+                Initialize Terminal
+             </button>
           </div>
         ) : (
           <div className="max-w-3xl w-full">
