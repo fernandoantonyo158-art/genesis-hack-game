@@ -58,6 +58,8 @@ export default function Home() {
   const [solutionHash, setSolutionHash] = useState("");
   const [selectedEvidence, setSelectedEvidence] = useState<{ src: string; title: string } | null>(null);
   const [isDecrypting, setIsDecrypting] = useState(false);
+  const [unlockedEnvelopes, setUnlockedEnvelopes] = useState([false, false, false]);
+  const [env2Code, setEnv2Code] = useState("");
 
   // Sounds
   const playSFX = (type: keyof typeof SFX) => {
@@ -197,14 +199,17 @@ export default function Home() {
   if (screen === 'selection') {
     return (
       <div className="agency-wrapper monitor-lines p-8 md:p-16 overflow-y-auto">
-        <header className="flex justify-between items-center mb-16 pb-8 border-b border-[#d4af37]/20">
-           <div>
-             <h1 className="text-3xl font-bold uppercase tracking-widest">Agency Database</h1>
-             <p className="text-xs font-mono opacity-50 uppercase tracking-widest">Signed in: {address?.slice(0,6)}...{address?.slice(-4)}</p>
-           </div>
+        <header className="fixed top-0 left-0 w-full z-[100] border-b border-[#d4af37]/20 bg-black/80 backdrop-blur-md p-4 flex justify-between items-center px-12">
+         <div className="text-[#d4af37] font-bold text-lg tracking-[0.4em] flex flex-col">
+            <span>GENLAYER: CASE #01</span>
+            <span className="text-[8px] tracking-[0.1em] opacity-50 font-mono">BUILD V.4 // SYNCED ACCESS</span>
+         </div>
+         <div className="flex items-center gap-6">
+           <p className="text-xs font-mono opacity-50 uppercase tracking-widest">Signed in: {address?.slice(0,6)}...{address?.slice(-4)}</p>
            <button onClick={() => setSoundEnabled(!soundEnabled)} className="p-3 border border-[#d4af37]/20 hover:border-[#d4af37] transition-all">
               {soundEnabled ? <Volume2 /> : <VolumeX />}
            </button>
+         </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
@@ -254,8 +259,8 @@ export default function Home() {
                <h2 className="text-[10px] font-mono uppercase text-zinc-500 mb-6 flex items-center gap-2 tracking-[0.2em]">
                  <Wallet size={14} /> Agent Identity Verified
                </h2>
-               <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png", title: "#ID-G01 // CONFIDENTIAL" })} className="polaroid w-48 mx-auto sm:mx-0">
-                  <img src="/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png" alt="SYNCING DATA [V.FINAL] - REFRESH IF SEEN" className="object-cover h-32 w-full" />
+               <div onClick={() => setSelectedEvidence({ src: "https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png", title: "#ID-G01 // CONFIDENTIAL" })} className="polaroid w-48 mx-auto sm:mx-0">
+                  <img src="https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png" alt="DATA RECOVERY IN PROGRESS [BUILD V.4]" className="object-cover h-32 w-full" />
                   <div className="polaroid-caption">#ID-G01 // CONFIDENTIAL</div>
                </div>
             </section>
@@ -265,16 +270,16 @@ export default function Home() {
                  <Search size={14} /> Evidence Locker: File #01
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png", title: "SCENE // 23:44" })} className="polaroid -rotate-1">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png" alt="SYNCING DATA [V.FINAL] - REFRESH IF SEEN" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png", title: "SCENE // 23:44" })} className="polaroid -rotate-1">
+                   <img src="https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png" alt="DATA RECOVERY IN PROGRESS [BUILD V.4]" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">SCENE // 23:44</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png", title: "INTEL // LOGS" })} className="polaroid rotate-2">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png" alt="SYNCING DATA [V.FINAL] - REFRESH IF SEEN" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png", title: "INTEL // LOGS" })} className="polaroid rotate-2">
+                   <img src="https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png" alt="DATA RECOVERY IN PROGRESS [BUILD V.4]" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">INTEL // LOGS</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "WALLET // 0xAF" })} className="polaroid -rotate-2">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png" alt="SYNCING DATA [V.FINAL] - REFRESH IF SEEN" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "WALLET // 0xAF" })} className="polaroid -rotate-2">
+                   <img src="https://genesis-hack-game.vercel.app/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png" alt="DATA RECOVERY IN PROGRESS [BUILD V.4]" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">WALLET // 0xAF</div>
                 </div>
               </div>
