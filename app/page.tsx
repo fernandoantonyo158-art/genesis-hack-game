@@ -65,12 +65,26 @@ export default function Home() {
   // Lightbox State
   const [selectedEvidence, setSelectedEvidence] = useState<{ src: string; title: string } | null>(null);
 
+  const [investigationStarted, setInvestigationStarted] = useState(false);
+  const [ambientAudio, setAmbientAudio] = useState<HTMLAudioElement | null>(null);
+
   // Sound triggering function
   const playSFX = (type: keyof typeof SFX) => {
     const audio = new Audio(SFX[type]);
     audio.volume = 0.3;
-    audio.play().catch(() => {}); // Catch browser autoplay blocks
+    audio.play().catch(() => {});
   };
+
+  // Ambient loop control
+  useEffect(() => {
+    if (investigationStarted && !ambientAudio) {
+      const audio = new Audio(SFX.ambient);
+      audio.loop = true;
+      audio.volume = 0.15;
+      audio.play().catch(() => {});
+      setAmbientAudio(audio);
+    }
+  }, [investigationStarted]);
 
   // Typewriter effect for briefing
   const [briefingText, setBriefingText] = useState("");
@@ -139,17 +153,47 @@ export default function Home() {
     alert("Transaction prompted to pay 0.1 GEN for a hint...");
   };
 
-  if (!isConnected) {
+  if (!investigationStarted || !isConnected) {
     return (
-      <main className="flex flex-col items-center justify-center min-h-screen p-8 bg-zinc-950">
-        <div className="flex flex-col items-center p-12 border border-zinc-800 rounded-2xl bg-zinc-900 shadow-2xl">
-          <ShieldAlert className="w-16 h-16 text-red-500 mb-6" />
-          <h1 className="text-3xl font-mono text-white mb-2 uppercase tracking-widest text-center">GenLayer Access</h1>
-          <p className="text-zinc-400 mb-8 max-w-md text-center">Connect your wallet to verify your Case Access NFT and enter the Genesis Hack investigation portal.</p>
-          <ConnectButton />
+      <main className="min-h-screen bg-[#05050a] flex items-center justify-center p-4 relative overflow-hidden crt">
+        {/* Atmospheric BG Elements */}
+        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/dust.png')] pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-full h-1 bg-[#110fff]/20 animate-pulse"></div>
+
+        <div className="max-w-2xl w-full z-10">
+           <section className="cyber-panel p-8 md:p-12 rounded-2xl border-2 border-[#110fff]/30 bg-black/80 shadow-[0_0_50px_rgba(17,15,255,0.2)]">
+              <div className="flex flex-col items-center text-center">
+                 <div className="w-20 h-20 bg-[#110fff]/10 rounded-full flex items-center justify-center mb-8 border border-[#110fff]/50 animate-[pulse_3s_infinite]">
+                    <ShieldAlert className="w-10 h-10 text-[#110fff] glow-blue" />
+                 </div>
+                 
+                 <h2 className="text-2xl font-mono text-[#bca2ff] mb-4 uppercase tracking-[0.4em] glitch" data-text="GenLayer Neural Scan">GenLayer Neural Scan</h2>
+                 
+                 <div className="w-full h-1 bg-zinc-800 rounded-full mb-8 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 h-full bg-[#110fff] animate-[shimmer_2s_infinite]"></div>
+                 </div>
+
+                 <p className="font-mono text-xs text-zinc-500 mb-10 leading-relaxed uppercase tracking-widest">
+                   {isConnected ? "Connection Established. Authenticating user bio-signatures..." : "Unauthorized Access Detected. Please establish a secure link to the GenLayer testnet to proceed."}
+                 </p>
+
+                 {!isConnected ? (
+                    <div className="scale-125">
+                      <ConnectButton />
+                    </div>
+                 ) : (
+                    <button 
+                      onClick={() => { playSFX('success'); setInvestigationStarted(true); }}
+                      className="w-full py-4 bg-[#110fff] hover:bg-[#110fff]/80 text-white font-mono uppercase tracking-[0.3em] rounded border border-white/20 shadow-[0_0_20px_rgba(17,15,255,0.4)] transition-all animate-bounce"
+                    >
+                      Initialize Case #01
+                    </button>
+                 )}
+              </div>
+           </section>
         </div>
       </main>
-    );
+    )
   }
 
   if (!hasAccessNFT) {
@@ -181,9 +225,32 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
+      <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-0 min-h-[calc(100vh-100px)]">
         
-        {/* Investigator Briefing */}
+        {/* Sidebar: Case Navigation */}
+        <aside className="lg:col-span-1 border-r border-[#110fff]/20 bg-black/40 flex flex-col py-8 items-center gap-8">
+           <div className="p-3 bg-[#110fff]/10 rounded border border-[#110fff]/30 cursor-pointer group hover:bg-[#110fff]/20 transition-all relative" title="Case #01">
+              <FileText className="w-6 h-6 text-[#110fff]" />
+              <div className="absolute -right-1 -top-1 w-2 h-2 bg-[#110fff] rounded-full"></div>
+           </div>
+           
+           <div className="p-3 bg-zinc-900/50 rounded border border-zinc-800 cursor-not-allowed opacity-40 group grayscale" title="Case #02 (Locked)">
+              <Lock className="w-6 h-6 text-zinc-500" />
+           </div>
+
+           <div className="p-3 bg-zinc-900/50 rounded border border-zinc-800 cursor-not-allowed opacity-40 group grayscale" title="Case #03 (Locked)">
+              <Lock className="w-6 h-6 text-zinc-500" />
+           </div>
+
+           <div className="mt-auto p-3 hover:text-white transition-colors cursor-pointer">
+              <Database className="w-6 h-6 text-zinc-600" />
+           </div>
+        </aside>
+
+        {/* Main Workspace */}
+        <main className="lg:col-span-11 p-4 md:p-8 space-y-8 overflow-y-auto">
+          
+          {/* Investigator Briefing */}
         <section className="cyber-panel p-6 rounded-xl border-l-4 border-[#bca2ff] bg-black/40">
            <h3 className="text-[#bca2ff] font-mono text-xs uppercase mb-3 flex items-center gap-2">
              <div className="w-1.5 h-1.5 bg-[#bca2ff] rotate-45"></div> Mission Briefing
