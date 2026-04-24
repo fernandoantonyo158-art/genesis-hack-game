@@ -93,7 +93,7 @@ export default function Home() {
   const handleUnlockHint = () => {
     // Simulate transaction to burn/pay tokens for hint
     // wagmi writeContract would be used here
-    alert("Transaction prompted to pay 0.01 ETH for a hint...");
+    alert("Transaction prompted to pay 0.1 GEN for a hint...");
   };
 
   if (!isConnected) {
@@ -127,7 +127,11 @@ export default function Home() {
           <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-widest font-mono glow-blue">Case File: #01</h1>
           <p className="text-neonBlue mt-2 font-mono text-sm uppercase">Subject: The Genesis Hack</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-neonBlue/10 border border-neonBlue/30 rounded-full">
+            <div className="w-2 h-2 bg-neonBlue rounded-full animate-pulse shadow-[0_0_8px_#0ea5e9]"></div>
+            <span className="text-[10px] font-mono text-neonBlue uppercase tracking-widest">GenLayer Bradbury</span>
+          </div>
           <div className="hidden md:block">
              <ConnectButton showBalance={false} />
           </div>
@@ -283,7 +287,7 @@ export default function Home() {
                 onClick={handleUnlockHint}
                 className="w-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 hover:border-zinc-500 py-3 rounded text-sm text-white font-mono flex justify-center items-center gap-2 transition-all"
              >
-                <Lock className="w-4 h-4 text-zinc-400" /> Unlock Hint (0.01 ETH)
+                <Lock className="w-4 h-4 text-zinc-400" /> Unlock Hint (0.1 GEN)
              </button>
           </section>
 
