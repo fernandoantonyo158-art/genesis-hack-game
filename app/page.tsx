@@ -238,8 +238,8 @@ export default function Home() {
                <h2 className="text-[10px] font-mono uppercase text-zinc-500 mb-6 flex items-center gap-2 tracking-[0.2em]">
                  <Wallet size={14} /> Agent Identity Verified
                </h2>
-               <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png", title: "Field Agent Identity Pass" })} className="polaroid w-48 mx-auto sm:mx-0">
-                  <img src="/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.png" alt="Identity" className="object-cover h-32 w-full" />
+               <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.jpg", title: "Field Agent Identity Pass" })} className="polaroid w-48 mx-auto sm:mx-0">
+                  <img src="/GenLayer_Game_Assets/Folder 01 Access_and_UI/field_agent_pass.jpg" alt="Identity" className="object-cover h-32 w-full" />
                   <div className="polaroid-caption">#ID-G01 // CONFIDENTIAL</div>
                </div>
             </section>
@@ -249,16 +249,16 @@ export default function Home() {
                  <Search size={14} /> Evidence Locker: File #01
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png", title: "Evidence A: Nexus Server Room" })} className="polaroid -rotate-1">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime_scene.png" alt="A" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime-scene.jpg", title: "Evidence A: Nexus Server Room" })} className="polaroid -rotate-1">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/crime-scene.jpg" alt="A" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">SCENE // 23:44</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png", title: "Agency Intelligence Report" })} className="polaroid rotate-2">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/police_report.png" alt="B" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/police-report.jpg", title: "Agency Intelligence Report" })} className="polaroid rotate-2">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/police-report.jpg" alt="B" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">INTEL // LOGS</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png", title: "Decentralized Transaction Logs" })} className="polaroid -rotate-2">
-                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.png" alt="C" className="object-cover h-32 w-full" />
+                <div onClick={() => setSelectedEvidence({ src: "/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.jpg", title: "Decentralized Transaction Logs" })} className="polaroid -rotate-2">
+                   <img src="/GenLayer_Game_Assets/Folder 02 Main_Evidence/wallet_logs.jpg" alt="C" className="object-cover h-32 w-full" />
                    <div className="polaroid-caption">WALLET // 0xAF</div>
                 </div>
               </div>
