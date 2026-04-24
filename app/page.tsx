@@ -139,7 +139,7 @@ export default function Home() {
       <main 
         className="min-h-screen flex items-center justify-center p-6 relative film-grain scanline-effect"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/images/background.jpg')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/background.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -197,7 +197,7 @@ export default function Home() {
              className="group cursor-pointer space-y-4"
            >
               <div className="aspect-[4/3] bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center transition-all group-hover:border-[#d4af37] relative overflow-hidden">
-                 <img src="/images/folder-icon.png" alt="Folder" className="w-24 h-24 opacity-40 group-hover:opacity-100 transition-all" />
+                 <img src="/folder-icon.png" alt="Folder" className="w-24 h-24 opacity-40 group-hover:opacity-100 transition-all" />
                  <div className="absolute top-4 left-4 px-2 py-1 bg-[#d4af37] text-black text-[10px] font-bold uppercase tracking-tighter">Active Case</div>
               </div>
               <div>
@@ -252,16 +252,16 @@ export default function Home() {
                  <Search size={14} /> Evidence Locker
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                <div onClick={() => setSelectedEvidence({ src: "/images/case-01/crime-scene.jpg", title: "Evidence A: Nexus Server Room" })} className="polaroid-frame -rotate-2 border-[#d4af37]/20">
-                   <img src="/images/case-01/crime-scene.jpg" alt="Crime Scene" />
+                <div onClick={() => setSelectedEvidence({ src: "/crime-scene.jpg", title: "Evidence A: Nexus Server Room" })} className="polaroid-frame -rotate-2 border-[#d4af37]/20">
+                   <img src="/crime-scene.jpg" alt="Crime Scene" />
                    <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#A109 - CRIME SCENE</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/images/case-01/police-report.jpg", title: "Evidence B: Agency Intelligence Report" })} className="polaroid-frame rotate-1 border-[#d4af37]/20">
-                   <img src="/images/case-01/police-report.jpg" alt="Police Report" />
+                <div onClick={() => setSelectedEvidence({ src: "/police-report.jpg", title: "Evidence B: Agency Intelligence Report" })} className="polaroid-frame rotate-1 border-[#d4af37]/20">
+                   <img src="/police-report.jpg" alt="Police Report" />
                    <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#B212 - AGENCY DOCS</div>
                 </div>
-                <div onClick={() => setSelectedEvidence({ src: "/images/case-01/wallet_logs.jpg", title: "Evidence C: Wallet Transaction Log" })} className="polaroid-frame -rotate-1">
-                   <img src="/images/case-01/wallet_logs.jpg" alt="Wallet Logs" />
+                <div onClick={() => setSelectedEvidence({ src: "/wallet_logs.jpg", title: "Evidence C: Wallet Transaction Log" })} className="polaroid-frame -rotate-1">
+                   <img src="/wallet_logs.jpg" alt="Wallet Logs" />
                    <div className="text-[8px] font-mono text-black/40 mt-4 uppercase">#C441 - WALLET LOGS</div>
                 </div>
               </div>
