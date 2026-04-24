@@ -11,7 +11,6 @@ const CONTRACT_ABI = [
     type: 'function',
     stateMutability: 'nonpayable',
     inputs: [
-      { name: 'player_address', type: 'address' },
       { name: 'solution_attempt', type: 'string' }
     ],
     outputs: [{ name: '', type: 'string' }]
@@ -20,12 +19,12 @@ const CONTRACT_ABI = [
     name: 'is_master_detective',
     type: 'function',
     stateMutability: 'view',
-    inputs: [{ name: 'detective', type: 'address' }],
+    inputs: [{ name: 'detective', type: 'string' }],
     outputs: [{ name: '', type: 'bool' }]
   }
 ] as const;
 
-const GENLAYER_CONTRACT_ADDRESS = "0xYOUR_DEPLOYED_CONTRACT_ADDRESS"; // Update this after deployment!
+const GENLAYER_CONTRACT_ADDRESS = "0x868ef59CBA2857bD930F3849E0d3Fdb001F914Fa";
 
 export default function Home() {
   const { isConnected, address } = useAccount();
@@ -87,7 +86,7 @@ export default function Home() {
       address: GENLAYER_CONTRACT_ADDRESS as `0x${string}`,
       abi: CONTRACT_ABI,
       functionName: 'solve_case',
-      args: [address, solutionHash],
+      args: [solutionHash],
     });
   };
 
